@@ -1,7 +1,10 @@
 import express from "express"
 import { db, Database } from "./db.js"
+import { sleep } from "./utils.js"
 
 const app = express()
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
 const port = 8000
 
 app.get("/", (req, res) => {
@@ -18,6 +21,10 @@ app.post("/api/v1/users", async (req, res) => {
 				last_name,
 			},
 		})
+
+		// WAITING FOR 1 SECOND BECAUSE IN REAL APP THERE WOULD BE A LOT OF OTHER THINGS THAT NEEDS TO BE DONE WHEN USER IS CREATED
+		await sleep(1000)
+
 		res.status(201).json(newUser)
 	} catch (error) {
 		console.error(error)
