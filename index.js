@@ -1,11 +1,13 @@
 import express from "express"
 import { db, Database } from "./db.js"
 import { sleep } from "./utils.js"
+import { config } from "dotenv"
+config()
 
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-const port = 8000
+const port = process.env.PORT
 
 app.get("/", (req, res) => {
 	res.send("Hello World!")
