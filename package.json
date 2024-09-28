@@ -7,7 +7,8 @@
     "dev": "nodemon index.js",
     "start": "node index.js",
     "generate-schema": "npx prisma generate",
-    "studio": "npx prisma studio"
+    "studio": "npx prisma studio",
+    "build": "echo 'No build step defined'"
   },
   "keywords": [],
   "author": "",
