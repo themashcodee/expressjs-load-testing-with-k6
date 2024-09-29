@@ -24,8 +24,8 @@ app.post("/api/v1/users", async (req, res) => {
 			},
 		})
 
-		// WAITING FOR 1 SECOND BECAUSE IN REAL APP THERE WOULD BE A LOT OF OTHER THINGS THAT NEEDS TO BE DONE WHEN USER IS CREATED
-		await sleep(1000)
+		// WAITING FOR 200 MILLISECONDS BECAUSE IN REAL APP THERE WOULD BE A LOT OF OTHER THINGS THAT NEEDS TO BE DONE WHEN USER IS CREATED
+		await sleep(200)
 
 		res.status(201).json(newUser)
 	} catch (error) {
