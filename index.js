@@ -2,6 +2,7 @@ import express from "express"
 import { db, Database } from "./db.js"
 import { sleep } from "./utils.js"
 import { variables } from "./variables.js"
+import { v4 as uuidv4 } from "uuid"
 
 const app = express()
 app.use(express.json())
@@ -13,10 +14,28 @@ app.get("/", (req, res) => {
 })
 app.post("/api/v1/users", async (req, res) => {
 	try {
-		const { uuid, email, first_name, last_name } = req.body
+		const { email, first_name, last_name } = req.body
+
+		const existing_user = db.users.findFirst({
+			where: {
+				email: email,
+			},
+			select: {
+				id: true,
+			},
+		})
+
+		if (existing_user) {
+			return res.status(404).json({
+				success: false,
+				code: 404,
+				error: "User already exist with this email",
+			})
+		}
+
 		const newUser = await db.users.create({
 			data: {
-				uuid,
+				uuid: uuidv4(),
 				email,
 				first_name,
 				last_name,
@@ -26,28 +45,51 @@ app.post("/api/v1/users", async (req, res) => {
 		// WAITING FOR 200 MILLISECONDS BECAUSE IN REAL APP THERE WOULD BE A LOT OF OTHER THINGS THAT NEEDS TO BE DONE WHEN USER IS CREATED
 		await sleep(200)
 
-		res.status(201).json(newUser)
+		res.status(201).json({
+			success: true,
+			code: 201,
+			data: {
+				user: newUser,
+			},
+		})
 	} catch (error) {
 		console.error(error)
-		res
-			.status(500)
-			.json({ error: "An error occurred while creating the user." })
+
+		res.status(500).json({
+			success: false,
+			code: 500,
+			error: "An error occurred while creating the user.",
+		})
 	}
 })
 app.get("/api/v1/users/:uuid", async (req, res) => {
 	try {
 		const { uuid } = req.params
 		const user = await db.users.findUnique({ where: { uuid } })
-		if (user) {
-			res.status(200).json(user)
-		} else {
-			res.status(404).json({ error: "User not found." })
+
+		if (!user) {
+			return res.status(404).json({
+				success: false,
+				code: 404,
+				error: "User not found.",
+			})
 		}
+
+		res.status(200).json({
+			success: true,
+			code: 200,
+			data: {
+				user,
+			},
+		})
 	} catch (error) {
 		console.error(error)
-		res
-			.status(500)
-			.json({ error: "An error occurred while retrieving the user." })
+
+		res.status(500).json({
+			success: false,
+			code: 500,
+			error: "An error occurred while retrieving the user.",
+		})
 	}
 })
 
