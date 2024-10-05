@@ -26,9 +26,9 @@ app.post("/api/v1/users", async (req, res) => {
 		})
 
 		if (existing_user) {
-			return res.status(404).json({
+			return res.status(400).json({
 				success: false,
-				code: 404,
+				code: 400,
 				error: "User already exist with this email",
 			})
 		}
