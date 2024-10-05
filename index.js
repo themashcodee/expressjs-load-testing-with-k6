@@ -83,8 +83,6 @@ app.get("/api/v1/users/:uuid", async (req, res) => {
 			},
 		})
 	} catch (error) {
-		console.error(error)
-
 		res.status(500).json({
 			success: false,
 			code: 500,
