@@ -16,7 +16,7 @@ app.post("/api/v1/users", async (req, res) => {
 	try {
 		const { email, first_name, last_name } = req.body
 
-		const existing_user = db.users.findFirst({
+		const existing_user = await db.users.findFirst({
 			where: {
 				email: email,
 			},
@@ -24,8 +24,6 @@ app.post("/api/v1/users", async (req, res) => {
 				id: true,
 			},
 		})
-
-		console.log({ existing_user })
 
 		if (existing_user) {
 			return res.status(404).json({
