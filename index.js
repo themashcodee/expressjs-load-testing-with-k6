@@ -25,6 +25,8 @@ app.post("/api/v1/users", async (req, res) => {
 			},
 		})
 
+		console.log({ existing_user })
+
 		if (existing_user) {
 			return res.status(404).json({
 				success: false,
