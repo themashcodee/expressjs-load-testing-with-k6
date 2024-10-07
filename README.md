@@ -147,7 +147,7 @@ The phenomenon where **response time increases** while **all requests still get 
 - **Increased response time** happens because the server is **overloaded or nearing its resource limits**, leading to delays in processing requests, **but it doesn't necessarily mean failure**.
 - The **200 status code** simply means the server successfully handled each request, even if it took longer than usual due to bottlenecks in CPU, memory, I/O, or network resources.
 
-## What Does a 25 Connection Limit Mean for a Database?
+## What Does a 25 Connections Limit Mean for a Database?
 
 If a database has a **25 connections limit**, it means the database can handle **up to 25 simultaneous connections** from clients (such as your server or application). However, there are important distinctions between **connections** and **transactions**:
 
